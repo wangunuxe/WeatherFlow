@@ -3,9 +3,53 @@ import json
 from datetime import datetime, timezone
 
 CITIES = {
-    "Paris":     {"lat": 48.8566, "lon": 2.3522},
-    "Lyon":      {"lat": 45.7640, "lon": 4.8357},
-    "Marseille": {"lat": 43.2965, "lon": 5.3698},
+    # 特大城市
+    "Paris":        {"lat": 48.8566, "lon": 2.3522},
+    "Marseille":    {"lat": 43.2965, "lon": 5.3698},
+    "Lyon":         {"lat": 45.7640, "lon": 4.8357},
+    "Toulouse":     {"lat": 43.6047, "lon": 1.4442},
+    "Nice":         {"lat": 43.7102, "lon": 7.2620},
+    "Nantes":       {"lat": 47.2184, "lon": -1.5536},
+    "Strasbourg":   {"lat": 48.5734, "lon": 7.7521},
+    "Montpellier":  {"lat": 43.6119, "lon": 3.8772},
+    "Bordeaux":     {"lat": 44.8378, "lon": -0.5792},
+    "Lille":        {"lat": 50.6292, "lon": 3.0573},
+
+    # 大城市
+    "Rennes":       {"lat": 48.1173, "lon": -1.6778},
+    "Reims":        {"lat": 49.2583, "lon": 4.0317},
+    "Le Havre":     {"lat": 49.4944, "lon": 0.1079},
+    "Saint-Etienne":{"lat": 45.4397, "lon": 4.3872},
+    "Toulon":       {"lat": 43.1242, "lon": 5.9280},
+    "Grenoble":     {"lat": 45.1885, "lon": 5.7245},
+    "Dijon":        {"lat": 47.3220, "lon": 5.0415},
+    "Angers":       {"lat": 47.4784, "lon": -0.5632},
+    "Nîmes":        {"lat": 43.8367, "lon": 4.3601},
+    "Villeurbanne": {"lat": 45.7676, "lon": 4.8800},
+
+    # 中等城市
+    "Le Mans":      {"lat": 48.0061, "lon": 0.1996},
+    "Aix-en-Provence": {"lat": 43.5297, "lon": 5.4474},
+    "Clermont-Ferrand": {"lat": 45.7772, "lon": 3.0870},
+    "Brest":        {"lat": 48.3904, "lon": -4.4861},
+    "Tours":        {"lat": 47.3941, "lon": 0.6848},
+    "Amiens":       {"lat": 49.8941, "lon": 2.2958},
+    "Limoges":      {"lat": 45.8336, "lon": 1.2611},
+    "Annecy":       {"lat": 45.8992, "lon": 6.1294},
+    "Perpignan":    {"lat": 42.6986, "lon": 2.8956},
+    "Boulogne-Billancourt": {"lat": 48.8350, "lon": 2.2400},
+
+    # 其他重要城市
+    "Metz":         {"lat": 49.1193, "lon": 6.1757},
+    "Besançon":     {"lat": 47.2380, "lon": 6.0243},
+    "Orléans":      {"lat": 47.9029, "lon": 1.9039},
+    "Rouen":        {"lat": 49.4432, "lon": 1.0993},
+    "Mulhouse":     {"lat": 47.7508, "lon": 7.3359},
+    "Caen":         {"lat": 49.1829, "lon": -0.3707},
+    "Nancy":        {"lat": 48.6921, "lon": 6.1844},
+    "Argenteuil":   {"lat": 48.9472, "lon": 2.2467},
+    "Montreuil":    {"lat": 48.8638, "lon": 2.4483},
+    "Pau":          {"lat": 43.2951, "lon": -0.3708},
 }
 
 def fetch_weather(city_name: str, lat: float, lon: float) -> dict:
@@ -24,7 +68,7 @@ def fetch_weather(city_name: str, lat: float, lon: float) -> dict:
             "windspeed_10m_max",
         ],
         "timezone":   "Europe/Paris",
-        "past_days":  7,
+        "past_days":  90,
         "forecast_days": 1,
     }
     # The Response class
