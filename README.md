@@ -1,6 +1,6 @@
-# 🌤️ France Weather Pipeline
+# 🌤️ WeatherFlow
 
-This project aims to collect daily weather information for three French cities and store it in a database. From the API source to the database, we use a pipeline to process the data. The pipeline is like an assembly line with three steps: Extract, Transform, and Load — this is called ETL. We then use Airflow to run this pipeline automatically instead of manually, because Airflow uses a DAG to define and schedule the workflow. Finally, we use Docker to encapsulate all the parts of this programme, so that we can run everything with a single command.
+This project aims to collect daily weather information for 40 French cities and store it in a database. From the API source to the database, we use a pipeline to process the data. The pipeline is like an assembly line with three steps: Extract, Transform, and Load — this is called ETL. We then use Airflow to run this pipeline automatically instead of manually, because Airflow uses a DAG to define and schedule the workflow. Finally, we use Docker to encapsulate all the parts of this programme, so that we can run everything with a single command.
 
 ## Overview
 
