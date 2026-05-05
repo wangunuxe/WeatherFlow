@@ -23,9 +23,10 @@ default_args = {
 
 # ── DAG 定义 ─────────────────────────────────────────────────
 with DAG(
-    dag_id="france_weather_pipeline",
+    #attribute
+    dag_id="WeatherFlow",
     default_args=default_args,
-    description="每日抓取法国三城市天气数据",
+    description="Daily fetch of weather data for 40 French cities",
     schedule="0 6 * * *",    # 每天早上6点（巴黎时间）运行
     start_date=datetime(2024, 1, 1),
     catchup=False,            # 不补跑历史数据（入门阶段先关掉）
@@ -39,7 +40,8 @@ with DAG(
         records = extract_all_cities()
         # 数据量小时可以直接用 XCom 传；数据大时应该写临时文件或 S3
         return records
-
+    # Airflow 不认识普通的 Python 函数，必须用 PythonOperator 包装之后，它才能被调度和管理
+    # task 是独立的 PythonOperator 对象,属于这个 DAG 的子对象（child objects）
     extract_task = PythonOperator(
         task_id="extract",
         python_callable=task_extract,
@@ -47,7 +49,7 @@ with DAG(
 
     # ── Task 2：Transform ────────────────────────────────────
     def task_transform(**context):
-        ti = context["ti"]
+        ti = context["ti"] #task instance
         raw_records = ti.xcom_pull(task_ids="extract")  # 从 extract task 取数据
         clean_records = transform(raw_records)
         return {"raw": raw_records, "clean": clean_records}
