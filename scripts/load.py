@@ -1,6 +1,7 @@
 import os
 import psycopg2
 from psycopg2.extras import execute_values
+from datetime import datetime, timezone
 
 #调用路径？？？
 # A dictionary containing all the information needed to connect to the database. Each value is read from an environment variable — if the variable is not set, it falls back to the default value on the right. The real values come from .env via docker-compose.yml.
@@ -22,9 +23,9 @@ def get_conn():
 
 def load_raw(records: list[dict]):
     """
-    writing to the raw layer: — no deduplication, as the raw layer's responsibility is to faithfully record the original data.
+    writing to the raw layer: load_raw() takes the cleaned records from extract.py;  no deduplication, as the raw layer's responsibility is to faithfully record the original data.
     """
-    # If the exact same record already exists, skip it silently instead of raising an error. This makes the insert safe to run multiple times.
+    # If the exact same record already exists, skip it silently instead of raising an error. This makes it safe to re-run without creating duplicates, while still perserving the original data faithfully
     sql = """
         INSERT INTO raw_weather (city, date, temp_max, temp_min, precip_mm, wind_max, fetched_at)
         VALUES %s
@@ -42,14 +43,12 @@ def load_raw(records: list[dict]):
 
     with get_conn() as conn, conn.cursor() as cur:
         execute_values(cur, sql, rows)
-    print(f"✅ raw 层写入 {len(rows)} 条")
+    print(f"✅ raw layer: {len(rows)} records written")
 
 
 def load_clean(records: list[dict]):
     """
-    幂等写入 clean 层（UPSERT）
-    同一城市同一天再次运行会更新，而不是报错或插入重复数据
-    这是 Airflow 任务幂等性的关键！
+    writing to the cleaned layer: load_clean() takes the cleaned records from transform.py and writes them to the clean_weather table using UPSERT; This makes the function idempotent — you can run it multiple times for the same day without creating duplicates or errors. It always guarantees that clean_weather contains the most up-to-date version of the data, ready for analysis or dashboards.
     """
     sql = """
         INSERT INTO clean_weather
@@ -67,8 +66,8 @@ def load_clean(records: list[dict]):
     """
     rows = [(r["city"], r["date"], r["temp_max_c"], r["temp_min_c"], r["temp_range_c"],
              r["precip_mm"], r["wind_max_kmh"], r["weather_category"],
-             __import__("datetime").datetime.utcnow()) for r in records]
+             datetime.now(timezone.utc).isoformat()) for r in records]
 
     with get_conn() as conn, conn.cursor() as cur:
         execute_values(cur, sql, rows)
-    print(f"✅ clean 层 UPSERT {len(rows)} 条")
+    print(f"✅clean layer: {len(rows)} records upserted")

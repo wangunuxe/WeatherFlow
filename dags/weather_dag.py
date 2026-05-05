@@ -1,4 +1,4 @@
-# Airflow DAG（第三步的核心）
+# Airflow DAG
 
 from datetime import datetime, timedelta
 from airflow import DAG
@@ -18,7 +18,7 @@ default_args = {
     "retries": 2,                         # 失败后最多重试2次
     "retry_delay": timedelta(minutes=5),  # 每次重试间隔5分钟
     "email_on_failure": True,             # 失败发邮件（需要配置 SMTP）
-    "email": ["your@email.com"],
+    "email": ["wangushaonv@gmail.com"],
 }
 
 # ── DAG 定义 ─────────────────────────────────────────────────

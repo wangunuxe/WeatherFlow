@@ -54,7 +54,7 @@ CITIES = {
 
 def fetch_weather(city_name: str, lat: float, lon: float) -> dict:
     """
-    Call the Open-Meteo API to fetch the last 7 days of daily weather data.
+    Call the Open-Meteo API to fetch the last 90 days of daily weather data.
     Completely free — no account or API key required.
     """
     url = "https://api.open-meteo.com/v1/forecast"
