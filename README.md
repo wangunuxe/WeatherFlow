@@ -104,8 +104,15 @@ LIMIT 10;
 ### 5. Visualize locally
 
 ```bash
-pip install psycopg2-binary pandas matplotlib
-python viz/plot_weather.py
+## 1. Create and activate a virtual environment
+python3 -m venv venv
+source venv/bin/activate
+
+## 2. Install dependencies
+pip install -r requirements.txt
+
+## 3. Run the visualization script
+python3 viz/plot_weather.py
 ```
 
 ## Database Design
